@@ -60,19 +60,13 @@ function App() {
         (newCard) => {
           const newCards = cards.map((currentCard) => currentCard._id === card._id ? newCard : currentCard)
           setCards(newCards);
-        },
-        (err) => {
+        })
+        .catch((err) => {
           console.log(err);
-        }
-      )
+        })
   }
-  // function handleCardDelete(card) {
-  //   api.deleteCard(`cards/${card._id}`)
-  //     .then(() => {
-  //       setCards(cards => cards.filter((state) => state._id !== card._id))
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
+  
+  
 
   function handleCardDelete(evt) {
     evt.preventDefault();
@@ -101,19 +95,19 @@ function App() {
   }
 
   function handleRegistration(password, email) {
-    auth.registration(password, email).then(
-      (data) => {
+    auth.registration(password, email)
+    .then((data) => {
         setIsRegistered(true);
         handleInfoToolTipOpen();
         history.push("/sign-in");
-      },
-      (err) => {
+      })
+      .catch((err) => {
         console.log(err);
         setIsRegistered(false);
         handleInfoToolTipOpen();
-      }
-    );
+      })
   }
+  
 
 
   function handleCardClick(card) {
@@ -188,7 +182,6 @@ function App() {
     auth.authorization(password, email)
     .then((data) => {
         setLoggedIn(true);
-        //localStorage.setItem("jwt", data.token);
         setUserEmail(email);
         history.push("/");
       },
@@ -197,6 +190,7 @@ function App() {
       }
     );
   }
+ 
 
   React.useEffect(() => {
     tokenCheck();
