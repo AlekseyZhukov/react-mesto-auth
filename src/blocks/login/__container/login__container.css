@@ -1,0 +1,16 @@
+.login__container {
+    width: 430px;
+    border-radius: 5px;
+    z-index: 1;
+    position: relative;
+    margin: 0 auto 20px;
+    text-align: center;
+    
+}
+
+
+@media screen and (max-width:550px) {
+   .login__container { 
+    width: 288px;
+}
+}

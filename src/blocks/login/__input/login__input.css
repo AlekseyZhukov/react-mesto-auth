@@ -1,0 +1,25 @@
+.login__input {
+    align-self: center;
+    margin-top: 35px;
+    width: 358px;
+    padding: 10px 0 10px;
+    border: 0;
+    border-bottom: 1px solid rgb(204, 204, 204, 1);
+    outline: none;
+    color: white;
+    background-color: #000000;
+}
+
+
+.login__input:last-of-type {
+    padding: 10px 0 10px;
+    margin-top: 20px;
+    margin-bottom: 200px;
+}
+
+@media screen and (max-width: 550px) {
+    .login__input {
+        width: 225px;
+    }
+    
+}
