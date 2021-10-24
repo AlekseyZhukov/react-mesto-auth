@@ -27,6 +27,7 @@
 @import url(./blocks/popup/__image-name/popup__image-name.css);
 @import url(./blocks/popup/__auth-image/popup__auth-image.css);
 @import url(./blocks/popup/_type/popup_type_infoTool.css);
+@import url(./blocks/popup/_type/popup_type_image.css);
 @import url(./blocks/popup/__auth-container/popup__auth-container.css);
 @import url(./blocks/popup/__auth-text/popup__auth-text.css);
 @import url(./blocks/form/__title/form__title.css);

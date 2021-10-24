@@ -2,5 +2,6 @@
     background-color: #000000;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     padding-bottom: 60px;
+    min-height: 100vh;
     
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import PopupWithForm from "./PopupWithForm"
+
 function AddPlacePopup(props) {
     const [name, setNamePlace] = React.useState('');
     const [link, setLinkPlace] = React.useState('');
@@ -16,22 +18,26 @@ function AddPlacePopup(props) {
         props.onAddPlace({
             name, link
         });
+        setNamePlace("");
+        setLinkPlace("");
     }
 
     return (
-        <div className={`popup popup_type_new-card} ${props.isOpen && 'popup_opened'}`}>
-            <div className="popup__container">
-                <button className="popup__close popup__close_edit" type="button" onClick={props.onClose}></button>
-                <form className="form" name="new-card" onSubmit={handleSubmit}>
-                    <h2 className="form__title">Новое место</h2>
-                    <input type="text" className="form__input" id="place" name="name" minLength="2" maxLength="30" required autoComplete="off" placeholder="Новое место" onChange={handleAddNamePlace} />
-                    <span className="form__input-error" id="place-error"></span>
-                    <input type="url" className="form__input" id="link" name="link" required autoComplete="off" placeholder="Ссылка на картинку" onChange={handleAddLinkPlace} />
-                    <span className="form__input-error" id="link-error"></span>
-                    <button className="form__save-button" type="submit">{props.isLoading ? "Сохранение..." : "Создать"}</button>
-                </form>
-            </div>
-        </div>
+        <PopupWithForm name="new-place"
+            text="Новое место"
+            isOpen={props.isOpen}
+            onClose={props.onClose}
+            onSubmit={handleSubmit}
+            btnText={props.isLoading ? "Сохранение..." : "Создать"}>
+            <input type="text" className="form__input" id="place" name="name"
+                minLength="2" maxLength="30" required autoComplete="off"
+                placeholder="Новое место" onChange={handleAddNamePlace} value={name || ''} />
+            <span className="form__input-error" id="place-error"></span>
+            <input type="url" className="form__input" id="link" name="link" 
+            required autoComplete="off" placeholder="Ссылка на картинку" 
+            onChange={handleAddLinkPlace} value={link || ''}/>
+            <span className="form__input-error" id="link-error"></span>
+        </PopupWithForm>
     );
 
 }

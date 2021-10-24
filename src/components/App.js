@@ -61,15 +61,16 @@ function App() {
           const newCards = cards.map((currentCard) => currentCard._id === card._id ? newCard : currentCard)
           setCards(newCards);
         })
-        .catch((err) => {
-          console.log(err);
-        })
+      .catch((err) => {
+        console.log(err);
+      })
   }
-  
-  
+
+
 
   function handleCardDelete(evt) {
     evt.preventDefault();
+    setIsLoading(true)
     api.deleteCard(selectedCard._id)
       .then(
         () => {
@@ -78,6 +79,9 @@ function App() {
           closeAllPopups();
         })
       .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      })
   }
 
   function handleEditAvatarClick() {
@@ -96,7 +100,7 @@ function App() {
 
   function handleRegistration(password, email) {
     auth.registration(password, email)
-    .then((data) => {
+      .then((data) => {
         setIsRegistered(true);
         handleInfoToolTipOpen();
         history.push("/sign-in");
@@ -107,7 +111,7 @@ function App() {
         handleInfoToolTipOpen();
       })
   }
-  
+
 
 
   function handleCardClick(card) {
@@ -180,17 +184,18 @@ function App() {
 
   function handleLogin(password, email) {
     auth.authorization(password, email)
-    .then((data) => {
+      .then((data) => {
+        console.log(data);
         setLoggedIn(true);
         setUserEmail(email);
         history.push("/");
-      },
-      (err) => {
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    );
+      })
   }
- 
+
+
 
   React.useEffect(() => {
     tokenCheck();
@@ -200,13 +205,15 @@ function App() {
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
       auth.getContent(jwt)
-      .then((res) => {
-        if (res) {
-          setUserEmail(res.data["email"]);
-          setLoggedIn(true);
-          history.push("/");
-        }
-      });
+        .then((res) => {
+          if (res) {
+            console.log(res)
+            setUserEmail(res.data["email"]);
+            setLoggedIn(true);
+            history.push("/");
+          }
+        })
+        .catch((err) => console.log(err))
     }
   }
 
@@ -216,39 +223,33 @@ function App() {
         <Spinner isLoading={isLoading} />
         <Header userEmail={userEmail} onSingOut={handleSignOut} />
         <Switch>
-        <Route path="/sign-in">
-            <Login  handleLogin={handleLogin} />
+          <Route path="/sign-in">
+            <Login handleLogin={handleLogin} />
           </Route>
           <Route path="/sign-up">
-            <Register onRegistration={handleRegistration}/>
+            <Register onRegistration={handleRegistration} />
           </Route>
 
-            <ProtectedRoute
-              component={Main}
-              path="/"
-              loggedIn={loggedIn}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDeleteRequest={handleCardDeleteRequest} />
-            
-        
-
-         
-
+          <ProtectedRoute
+            component={Main}
+            path="/"
+            loggedIn={loggedIn}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDeleteRequest={handleCardDeleteRequest} />
         </Switch>
-        {loggedIn && <Footer />}
-        
 
+        {loggedIn && <Footer />}
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} isLoading={isLoading} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} isLoading={isLoading} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} btnText='Создать' onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isLoading={isLoading} />
-        <PopupWithForm name='delete' text='Вы уверены' btnText='Да' />
+        <PopupWithForm name='delete' text='Вы уверены' btnText='Да' isLoading={isLoading} />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <ConfirmPopup isOpen={isConfirmPopupOpen} onClose={closeAllPopups} onSubmit={handleCardDelete} />
+        <ConfirmPopup isOpen={isConfirmPopupOpen} onClose={closeAllPopups} onSubmit={handleCardDelete} isLoading={isLoading} />
         <InfoToolTip isInfoToolTipOpen={isInfoToolTipOpen} isRegistered={isRegistered} onClose={closeAllPopups} />
 
       </div>
