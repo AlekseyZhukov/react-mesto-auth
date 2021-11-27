@@ -126,7 +126,9 @@ function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setAddPlacePopup(false);
-    setSelectedCard({ isOpen: false });
+    setSelectedCard({
+       isOpen: false
+      });
     setConfirmPopupOpen(false);
     setIsInfoToolTipOpen(false)
 
